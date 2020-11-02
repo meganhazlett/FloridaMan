@@ -57,6 +57,7 @@ def get_twitter_data(twitter_consumer_key, twitter_consumer_secret, twitter_acce
 		tweets = tweepy.Cursor(api.user_timeline,id=username).items(count)
 		tweets_list = [[tweet.text] for tweet in tweets]
 		tweets_df = pd.DataFrame(tweets_list)
+		tweets_df.columns = ['article']
 		logger.info("@FloridaMan__ tweers read and placed in data frame")
 	except: 
 		logger.error("Failed to find @FloridaMan__ tweets. Try again")
