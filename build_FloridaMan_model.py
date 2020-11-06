@@ -12,6 +12,7 @@ from nltk.tokenize import word_tokenize
 import pandas as pd 
 import numpy as np
 import logging as logger
+import pickle
 logger.basicConfig(level=logger.INFO)
 
 def clean_data(data): 
@@ -104,8 +105,20 @@ if __name__ == '__main__':
 		logger.info("Data is loaded.")
 	except: 
 		logger.error("Data was not able to be loaded.")
+
 	# Clean data 
 	tokenized_words, word_vocab, myword_dict = clean_data(data = data)
+
+	# Save dictionary
+	try: 
+		filehandler = open('myword_dict.txt', 'wb')
+		pickle.dump(myword_dict, filehandler)
+		filehandler.close()
+		logger.info("Saved dictionary to file.")
+	except:
+		logger.error("Problem saving dictionary to file.")
+
+	# Build model
 	model = build_model(seq_length = 10, hidden_layers = 256, dropout_prob = 0.2, activation = 'softmax', 
-	loss = 'categorical_crossentropy', optimizer = 'adam', epochs = 100, batch_size = 128)
+	loss = 'categorical_crossentropy', optimizer = 'adam', epochs = 1, batch_size = 128)
 
