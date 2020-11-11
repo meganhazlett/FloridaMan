@@ -13,6 +13,8 @@ import pandas as pd
 import numpy as np
 import logging as logger
 import pickle
+import json 
+import csv
 logger.basicConfig(level=logger.INFO)
 
 def clean_data(data): 
@@ -28,10 +30,19 @@ def clean_data(data):
 		# tokenize
 		tokenized_words = word_tokenize(mystring)
 		logger.info("Tokenization complete")
+
 		# remove all hyperlinks as tokens 
 		pattern = ("http", "//t.co")
 		tokenized_words = [token for token in tokenized_words if not token.startswith(pattern)]
+
+		# Get complete vocab list 
 		word_vocab = list(set(tokenized_words))
+
+		# Save word vocab to file 
+		with open('word_vocab.txt', 'w') as filehandle:
+			filehandle.writelines("%s\n" % word for word in word_vocab)
+
+
 		word_vocab_vals = np.arange(0, len(word_vocab)+1, 1).tolist() 
 		myword_dict = {word_vocab[i]: word_vocab_vals[i] for i in range(len(word_vocab))} 
 		indx_char_word = np.array(word_vocab)
@@ -76,6 +87,12 @@ def build_model(seq_length = 10, hidden_layers = 256, dropout_prob = 0.2, activa
 	n_patterns_word = len(X_word)
 	print("Total number of patterns:", n_patterns_word)
 
+	# Save X_word to txt file 
+	with open("X_word.csv","w") as f:
+	    wr = csv.writer(f)
+	    wr.writerows(X_word)
+	logger.info("X_word saved to file.")
+
 	# Create features 
 	X_transformed_word = numpy.reshape(X_word, (n_patterns_word, seq_length, 1))  
 	X_transformed_word = X_transformed_word/float(len(word_vocab))
@@ -83,7 +100,14 @@ def build_model(seq_length = 10, hidden_layers = 256, dropout_prob = 0.2, activa
 
 	# Create model 
 	mymod_word = define_model_word(hidden_layers, dropout_prob, activation, loss, optimizer, X_transformed_word)
-	logger.info("Nodel read to be built.")
+	logger.info("Model ready to be built.")
+
+	try: 
+		filename = "finalized_model.pkl"
+		pickle.dump(mymod_word, open(filename, 'wb'))
+		logger.info("Model saved to file")
+	except:
+		logger.error("There was an issue saving the model") 
 
 	# model check points 
 	filepath_word = "weights-improvement-word-{epoch:02d}-{loss:.4f}.hdf5"
@@ -94,6 +118,7 @@ def build_model(seq_length = 10, hidden_layers = 256, dropout_prob = 0.2, activa
 	# build model 
 	mymod_word.fit(X_transformed_word, Y_transformed_word, epochs=epochs, batch_size=batch_size, callbacks = callback_info_word)
 	logger.info("Model built. Check folder.")
+
 	return mymod_word
 
 
@@ -111,14 +136,15 @@ if __name__ == '__main__':
 
 	# Save dictionary
 	try: 
-		filehandler = open('myword_dict.txt', 'wb')
-		pickle.dump(myword_dict, filehandler)
-		filehandler.close()
-		logger.info("Saved dictionary to file.")
-	except:
-		logger.error("Problem saving dictionary to file.")
+		with open('myword_dict.json', 'w') as fp:
+			json.dump(myword_dict, fp)
+		logger.info("My word dictionary saved to file")
+	except: 
+		logger.error("There was an issue saving the dictionary to file")
+
 
 	# Build model
 	model = build_model(seq_length = 10, hidden_layers = 256, dropout_prob = 0.2, activation = 'softmax', 
-	loss = 'categorical_crossentropy', optimizer = 'adam', epochs = 1, batch_size = 128)
+		loss = 'categorical_crossentropy', optimizer = 'adam', epochs = 100, batch_size = 128)
+
 
