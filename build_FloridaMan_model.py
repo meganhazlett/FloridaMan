@@ -126,7 +126,7 @@ if __name__ == '__main__':
 	# Load data 
 	try: 
 		data = pd.read_csv("florida_articles_df.csv")
-		data = data.drop(columns = ['Unnamed: 0'])
+		
 		logger.info("Data is loaded.")
 	except: 
 		logger.error("Data was not able to be loaded.")
@@ -144,7 +144,7 @@ if __name__ == '__main__':
 
 
 	# Build model
-	model = build_model(seq_length = 10, hidden_layers = 256, dropout_prob = 0.2, activation = 'softmax', 
+	model = build_model(seq_length = 5, hidden_layers = 256, dropout_prob = 0.2, activation = 'softmax', 
 		loss = 'categorical_crossentropy', optimizer = 'adam', epochs = 100, batch_size = 128)
 
 
