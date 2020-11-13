@@ -1,11 +1,5 @@
 import numpy
 import random
-# from keras.models import Sequential
-# from keras.layers import Dense
-# from keras.layers import Dropout
-# from keras.layers import LSTM
-# from keras.callbacks import ModelCheckpoint, EarlyStopping
-# from keras.utils import np_utils
 import sys
 import nltk 
 from nltk.tokenize import word_tokenize
@@ -15,7 +9,7 @@ import logging as logger
 import json
 import pickle
 from csv import reader
-logger.basicConfig(level=logger.INFO)
+logger.basicConfig(level=logger.ERROR)
 
 def generate_user_text(user_sentence, word_vocab , X_word): 
 	'''Generates new florida man articles based on user input of 10 words'''
@@ -24,7 +18,7 @@ def generate_user_text(user_sentence, word_vocab , X_word):
     
     # generate characters
 	new_pattern = [] 
-	for i in range(20):
+	for i in range(7):
 		temp_pattern = pattern_word[i:len(pattern_word)]
 		x = numpy.reshape(temp_pattern, (1,len(temp_pattern), 1))
 		x = x / float(len(word_vocab))
@@ -109,12 +103,12 @@ if __name__ == '__main__':
 
 	#Get results 
 	try: 
-		user_sentence = input("Enter a 10 word phrase: ")
+		user_sentence = input("Enter a 5 word phrase: ")
 		print("Your phrase is", user_sentence)
+		# Get results 
+		new_user_article = generate_user_text(user_sentence = user_sentence, word_vocab = word_vocab, X_word = X_word)
+		cleaned_user_article = clean_user_results(new_user_article)
+		print(cleaned_user_article)
 	except: 
 		logger.error("A word is not in the dictionary ... try again")
-	new_user_article = generate_user_text(user_sentence = user_sentence, word_vocab = word_vocab, X_word = X_word)
 
-	# Clean results 
-	cleaned_user_article = clean_user_results(new_user_article)
-	print(cleaned_user_article)
