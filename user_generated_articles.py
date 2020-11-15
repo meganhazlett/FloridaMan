@@ -24,7 +24,7 @@ def generate_user_text(user_sentence, word_vocab , X_word):
 		mymod_word.load_weights(filename_word)
 		loss = "categorical_crossentropy"
 		optimizer = "adam"
-		mymod_word.compile(loss=loss, optimizer= optimizer)
+		mymod_word.compile(loss=loss, foptimizer= optimizer)
 		logger.info("Model weights loaded.")
 	except:
 		logger.error("Model weights not found.")
