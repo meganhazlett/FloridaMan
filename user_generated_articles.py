@@ -1,21 +1,47 @@
 import numpy
-import random
-import sys
-import nltk 
+import nltk
 from nltk.tokenize import word_tokenize
-import pandas as pd 
-import numpy as np
 import logging as logger
 import json
 import pickle
 from csv import reader
 logger.basicConfig(level=logger.ERROR)
 
-def generate_user_text(user_sentence, word_vocab , X_word): 
+
+def generate_user_text(user_sentence, word_vocab , X_word):
 	'''Generates new florida man articles based on user input of 10 words'''
+	try:
+		#path = open('finalized_model.pkl', 'rb')
+		path = open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/finalized_model.pkl', 'rb')
+		mymod_word = pickle.load(path)
+		logger.info("Model loaded in from file")
+	except:
+		logger.error()
+
+	# Load model weights
+	try:
+		filename_word = "weights-improvement-word-100-3.1510.hdf5"
+		mymod_word.load_weights(filename_word)
+		loss = "categorical_crossentropy"
+		optimizer = "adam"
+		mymod_word.compile(loss=loss, optimizer= optimizer)
+		logger.info("Model weights loaded.")
+	except:
+		logger.error("Model weights not found.")
+
+	try:
+		with open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/myword_dict.json', 'r') as fp:
+			myword_dict = json.load(fp)
+		logger.info("Dictionary loaded")
+		indx_char_word = dict((i, c) for i, c in enumerate(myword_dict))
+		logger.info("Dictionary reversed for predictions")
+	except:
+		logger.error("Dictionary unable to be loadeed")
+
 	my_sentence_token = word_tokenize(user_sentence)
+
 	pattern_word = [myword_dict[w] for w in my_sentence_token]
-    
+
     # generate characters
 	new_pattern = [] 
 	for i in range(7):
@@ -43,10 +69,13 @@ def clean_user_results(user_results):
 
 
 
-if __name__ == '__main__':
-	# Load model 
+def generateText(user_sentence):
+#if __name__ == "__main__":
+	# Load model
+
 	try: 
-		path = open('finalized_model.pkl', 'rb')
+		#path = open('finalized_model.pkl', 'rb')
+		path = open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/finalized_model.pkl', 'rb')
 		mymod_word = pickle.load(path)
 		logger.info("Model loaded in from file")
 	except: 
@@ -54,7 +83,7 @@ if __name__ == '__main__':
 
 	# Load model weights  
 	try:  
-		filename_word = "weights-improvement-word-100-1.8516.hdf5"
+		filename_word = "weights-improvement-word-100-3.1510.hdf5"
 		mymod_word.load_weights(filename_word)
 		loss = "categorical_crossentropy"
 		optimizer = "adam"
@@ -67,7 +96,7 @@ if __name__ == '__main__':
 
 	# Reverse dictionary
 	try: 
-		with open('myword_dict.json', 'r') as fp:
+		with open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/myword_dict.json', 'r') as fp:
 			myword_dict = json.load(fp)
 		logger.info("Dictionary loaded")
 		indx_char_word = dict((i, c) for i, c in enumerate(myword_dict))
@@ -78,7 +107,7 @@ if __name__ == '__main__':
 	# Load in word_vocab 
 	try: 
 		word_vocab = []
-		with open('word_vocab.txt', 'r') as filehandle:
+		with open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/word_vocab.txt', 'r') as filehandle:
 			filecontents = filehandle.readlines()
 			for line in filecontents:
 				current_word = line[:-1]
@@ -91,7 +120,7 @@ if __name__ == '__main__':
 
 	# Load in X_word 
 	try: 
-		with open('X_word.csv', 'r') as read_obj:
+		with open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/X_word.csv', 'r') as read_obj:
 		    csv_reader = reader(read_obj)
 		    X_word = list(csv_reader)
 		# Convert to integeres 
@@ -103,12 +132,18 @@ if __name__ == '__main__':
 
 	#Get results 
 	try: 
-		user_sentence = input("Enter a 5 word phrase: ")
-		print("Your phrase is", user_sentence)
+		#user_sentence = input("Enter a 5 word phrase: ")
+		# print("Your phrase is", user_sentence)
 		# Get results 
 		new_user_article = generate_user_text(user_sentence = user_sentence, word_vocab = word_vocab, X_word = X_word)
+		print('i am here new ua')
 		cleaned_user_article = clean_user_results(new_user_article)
+		print('i am here new cua')
 		print(cleaned_user_article)
+		return cleaned_user_article
 	except: 
-		logger.error("A word is not in the dictionary ... try again")
+		logger.error("A word is not in the dictionary or phrase is not long enough... try again")
+
+
+
 
