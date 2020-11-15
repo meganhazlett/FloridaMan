@@ -10,9 +10,9 @@ logger.basicConfig(level=logger.ERROR)
 
 def generate_user_text(user_sentence, word_vocab , X_word):
 	'''Generates new florida man articles based on user input of 10 words'''
+	# Load model
 	try:
-		#path = open('finalized_model.pkl', 'rb')
-		path = open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/finalized_model.pkl', 'rb')
+		path = open('finalized_model.pkl', 'rb')
 		mymod_word = pickle.load(path)
 		logger.info("Model loaded in from file")
 	except:
@@ -29,8 +29,9 @@ def generate_user_text(user_sentence, word_vocab , X_word):
 	except:
 		logger.error("Model weights not found.")
 
+	# Load dictionary
 	try:
-		with open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/myword_dict.json', 'r') as fp:
+		with open('myword_dict.json', 'r') as fp:
 			myword_dict = json.load(fp)
 		logger.info("Dictionary loaded")
 		indx_char_word = dict((i, c) for i, c in enumerate(myword_dict))
@@ -70,44 +71,11 @@ def clean_user_results(user_results):
 
 
 def generateText(user_sentence):
-#if __name__ == "__main__":
-	# Load model
-
-	try: 
-		#path = open('finalized_model.pkl', 'rb')
-		path = open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/finalized_model.pkl', 'rb')
-		mymod_word = pickle.load(path)
-		logger.info("Model loaded in from file")
-	except: 
-		logger.error()
-
-	# Load model weights  
-	try:  
-		filename_word = "weights-improvement-word-100-3.1510.hdf5"
-		mymod_word.load_weights(filename_word)
-		loss = "categorical_crossentropy"
-		optimizer = "adam"
-		mymod_word.compile(loss=loss, optimizer= optimizer)
-		logger.info("Model weights loaded.")
-	except: 
-		logger.error("Model weights not found.")
-
-
-
-	# Reverse dictionary
-	try: 
-		with open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/myword_dict.json', 'r') as fp:
-			myword_dict = json.load(fp)
-		logger.info("Dictionary loaded")
-		indx_char_word = dict((i, c) for i, c in enumerate(myword_dict))
-		logger.info("Dictionary reversed for predictions")
-	except: 
-		logger.error("Dictionary unable to be loadeed")
-
+	'''Full model run '''
 	# Load in word_vocab 
 	try: 
 		word_vocab = []
-		with open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/word_vocab.txt', 'r') as filehandle:
+		with open('word_vocab.txt', 'r') as filehandle:
 			filecontents = filehandle.readlines()
 			for line in filecontents:
 				current_word = line[:-1]
@@ -120,7 +88,7 @@ def generateText(user_sentence):
 
 	# Load in X_word 
 	try: 
-		with open('/Users/meganhazlett/Documents/NorthwesternMSiA/Text Analysis/Project/FloridaMan/X_word.csv', 'r') as read_obj:
+		with open('X_word.csv', 'r') as read_obj:
 		    csv_reader = reader(read_obj)
 		    X_word = list(csv_reader)
 		# Convert to integeres 
