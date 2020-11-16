@@ -1,10 +1,12 @@
 # Florida Man Returns
-Generating New “Florida Man” Article Titles Using LSTM /n
-An NPL Project by Megan Hazlett 
+Generating New “Florida Man” Article Titles Using LSTM <br/>
+An NPL Project by Megan Hazlett <br/>
+November 2020
 
 ## Directory Structure 
 ```
 ├── README.md                                    <- You are here
+├── FloridaMan_WriteUp.pdf                                  <- Full write up of process
 │
 #### Acquires data for project
 ├──get_florida_data.py                           <- Scrapes Twitter and Reddit for data (example of data can be found on FloridaMan subreddit and Twitter page @FloridaMan__)
