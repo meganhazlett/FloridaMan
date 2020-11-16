@@ -32,11 +32,11 @@ An NPL Project by Megan Hazlett
 ```
 
 ## Instructions for running 
-```python app.py``` \n
-Follow the address to http://127.0.0.1:5000 \n
-Enter 5 words that could be part of a Florida Man article (all lower case, no punctuation) \n
-Examples include: \n
-- "florida man parks in car" \n
-- "while going to store florida" \n
-- "in a fit of rage" \n
+```python app.py``` \\
+Follow the address to http://127.0.0.1:5000 \\
+Enter 5 words that could be part of a Florida Man article (all lower case, no punctuation) \\
+Examples include: \\
+- "florida man parks in car" \\
+- "while going to store florida" \\
+- "in a fit of rage" \\
 Note that errors are usually attributed to a word not being in the dictionary ... if this happens to you please try again. 
