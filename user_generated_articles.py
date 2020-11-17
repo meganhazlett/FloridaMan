@@ -107,7 +107,8 @@ def generateText(user_sentence):
 		cleaned_user_article = clean_user_results(new_user_article)
 		print(cleaned_user_article)
 		return cleaned_user_article
-	except: 
+	except:
+		return "A word is not in the dictionary or phrase is not long enough... try again"
 		logger.error("A word is not in the dictionary or phrase is not long enough... try again")
 
 
