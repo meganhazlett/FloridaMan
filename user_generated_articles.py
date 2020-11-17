@@ -73,7 +73,7 @@ def clean_user_results(user_results):
 def generateText(user_sentence):
 	'''Full model run '''
 	# Load in word_vocab 
-	try: 
+	try:
 		word_vocab = []
 		with open('word_vocab.txt', 'r') as filehandle:
 			filecontents = filehandle.readlines()
@@ -82,16 +82,16 @@ def generateText(user_sentence):
 				word_vocab.append(current_word)
 
 		logger.info("Loaded in word_vocab.txt as list")
-	except: 
+	except:
 		logger.error("Unable to load word vocab file")
 
 
-	# Load in X_word 
-	try: 
+	# Load in X_word
+	try:
 		with open('X_word.csv', 'r') as read_obj:
 		    csv_reader = reader(read_obj)
 		    X_word = list(csv_reader)
-		# Convert to integeres 
+		# Convert to integeres
 		X_word = [[int(s) for s in xs] for xs in X_word]
 		logger.info("Loaded in X_word")
 	except:
@@ -104,9 +104,7 @@ def generateText(user_sentence):
 		# print("Your phrase is", user_sentence)
 		# Get results 
 		new_user_article = generate_user_text(user_sentence = user_sentence, word_vocab = word_vocab, X_word = X_word)
-		print('i am here new ua')
 		cleaned_user_article = clean_user_results(new_user_article)
-		print('i am here new cua')
 		print(cleaned_user_article)
 		return cleaned_user_article
 	except: 
