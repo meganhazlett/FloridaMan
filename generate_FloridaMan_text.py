@@ -1,16 +1,6 @@
 import numpy
-import random
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.layers import LSTM
-from keras.callbacks import ModelCheckpoint, EarlyStopping
-from keras.utils import np_utils
-import sys
-import nltk 
-from nltk.tokenize import word_tokenize
-import pandas as pd 
-import numpy as np
+import nltk
+import pandas as pd
 import logging as logger
 import json
 import pickle
@@ -26,7 +16,7 @@ def generate_text(word_vocab , X_word):
     
     # generate characters
 	new_pattern = [] 
-	for i in range(20):
+	for i in range(10):
 		temp_pattern = pattern_word[i:len(pattern_word)]
 		x = numpy.reshape(temp_pattern, (1,len(temp_pattern), 1))
 		x = x / float(len(word_vocab))
@@ -62,7 +52,10 @@ if __name__ == '__main__':
 
 	# Load model weights  
 	try:  
-		filename_word = "weights-improvement-word-100-1.8516.hdf5"
+		# 20% dropout 
+		filename_word = "weights-improvement-word-100-3.1510.hdf5"
+		# 60% dropout
+		# filename_word = "weights-improvement-word-100-4.3372.hdf5"
 		mymod_word.load_weights(filename_word)
 		loss = "categorical_crossentropy"
 		optimizer = "adam"

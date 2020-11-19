@@ -1,13 +1,10 @@
 import numpy
-import random
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
 from keras.layers import LSTM
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.utils import np_utils
-import sys
-import nltk 
 from nltk.tokenize import word_tokenize
 import pandas as pd 
 import numpy as np
