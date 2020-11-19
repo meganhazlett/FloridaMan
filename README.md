@@ -6,7 +6,6 @@ November 2020
 ## Directory Structure 
 ```
 ├── README.md                                    <- You are here
-├── FloridaMan_WriteUp.pdf                   <- Full write up of process
 ├── requirements.txt                                  <- Packages needed to reproduce code 
 │
 #### Acquires data for project
