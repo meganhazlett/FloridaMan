@@ -7,6 +7,7 @@ November 2020
 ```
 ├── README.md                                    <- You are here
 ├── requirements.txt                                  <- Packages needed to reproduce code 
+├── FloridaMan_paper_acl_format.pdf               <- Final paper 
 │
 #### Acquires data for project
 ├──get_florida_data.py                           <- Scrapes Twitter and Reddit for data (example of data can be found on FloridaMan subreddit and Twitter page @FloridaMan__)
